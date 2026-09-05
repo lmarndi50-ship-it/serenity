@@ -211,7 +211,7 @@ export function TeacherAttendancePage() {
           ) : (
             <div className="overflow-x-auto border-t border-border">
               <table className="w-full min-w-[560px] text-sm">
-                <thead className="sticky top-16 z-10">
+                <thead>
                   <tr className="border-b border-border bg-muted/60 text-xs uppercase tracking-wide text-muted-foreground">
                     <th scope="col" className="px-5 py-2.5 text-left font-semibold">Roll No</th>
                     <th scope="col" className="px-4 py-2.5 text-left font-semibold">Student</th>

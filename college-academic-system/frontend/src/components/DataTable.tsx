@@ -30,8 +30,6 @@ interface DataTableProps<T> {
   emptyMessage?: string;
   toolbar?: ReactNode;
   onRowClick?: (row: T) => void;
-  /** Sticky header for long tables inside a scroll container. */
-  stickyHeader?: boolean;
 }
 
 export function DataTable<T>({
@@ -46,7 +44,6 @@ export function DataTable<T>({
   emptyMessage,
   toolbar,
   onRowClick,
-  stickyHeader,
 }: DataTableProps<T>) {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -125,7 +122,7 @@ export function DataTable<T>({
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-sm">
-            <thead className={cn(stickyHeader && 'sticky top-0 z-10')}>
+            <thead>
               <tr className="border-b border-border bg-muted/50">
                 {columns.map((column) => (
                   <th

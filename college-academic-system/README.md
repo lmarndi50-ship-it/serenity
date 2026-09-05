@@ -421,6 +421,10 @@ browser. `PLAYWRIGHT_CHROMIUM=/path/to/chromium` points the suite at an existing
 **`npm test` mutates the database** — it creates a test, an assignment, marks attendance and
 marks notifications read. Re-run `npm run seed` afterwards for a clean demo.
 
+**Reset the database before starting the API, not while it is running.** `prisma migrate
+reset` drops and recreates the schema, and a running server keeps pooled connections to the
+old one; requests fail transiently until those reconnect. Restart the API after a reset.
+
 **What the API suite covers:** all three logins by email and by roll number; role separation
 (403 at every boundary, including a teacher reaching for another teacher's subject);
 attendance idempotency and future-date rejection; marks validation at both bounds; assignment
