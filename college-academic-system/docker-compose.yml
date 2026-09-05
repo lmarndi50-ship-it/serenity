@@ -1,0 +1,61 @@
+# Development stack. The API and SPA run on the host with `npm run dev`;
+# this file provides the database (and, with the `full` profile, the whole app).
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cams-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cams
+      POSTGRES_PASSWORD: cams_dev_password
+      POSTGRES_DB: cams
+    ports:
+      - '5432:5432'
+    volumes:
+      - cams-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U cams -d cams']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    profiles: ['full']
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cams-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://cams:cams_dev_password@db:5432/cams?schema=public
+      # Override these before using this profile for anything real.
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-change-me-access-secret-at-least-16-chars}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-change-me-refresh-secret-at-least-16-chars}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080}
+    ports:
+      - '4000:4000'
+    volumes:
+      - cams-uploads:/app/uploads
+
+  web:
+    profiles: ['full']
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:4000/api}
+    container_name: cams-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - '8080:80'
+
+volumes:
+  cams-db-data:
+  cams-uploads:
