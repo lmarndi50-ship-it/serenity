@@ -22,6 +22,7 @@ college-academic-system/
 - [Demo logins](#demo-logins)
 - [Architecture](#architecture)
 - [How the numbers are calculated](#how-the-numbers-are-calculated)
+- [Assignment deadline reminders](#assignment-deadline-reminders)
 - [API reference](#api-reference)
 - [Database schema](#database-schema)
 - [Security](#security)
@@ -124,7 +125,8 @@ src/
 ├── controllers/            Request handling per role: auth, student, teacher, admin, calendar, report
 ├── routes/                 Route table, wiring validation + auth middleware to controllers
 ├── middleware/             authenticate, authorize, validate, upload, centralised error handler
-├── services/               Business logic: analytics, notifications, tokens, settings, reports
+├── services/               Business logic: analytics, notifications, deadlines, tokens, settings, reports
+├── jobs/                   Scheduled work run outside the API process (deadline reminders)
 ├── utils/                  academics.ts (all the maths), prisma client, ApiError, response helpers
 └── validation/schemas.ts   Every request shape, as Zod schemas
 prisma/
@@ -216,6 +218,37 @@ All percentages are rounded to one decimal place.
 When attendance is saved, any student who has dropped below the threshold is notified
 automatically. The notification is de-duplicated per student, subject and band, so a student
 is told once per band rather than after every class.
+
+### Assignment deadline reminders
+
+Students with an outstanding submission are reminded before an assignment falls due:
+
+> Computer Networks: "OSI Model Report" is due tomorrow.
+
+This is a **standalone job**, not an in-process timer, so the API can run on more than one
+instance without each one sending its own copy:
+
+```bash
+cd backend
+npm run notify:deadlines              # looks 24 hours ahead by default
+DEADLINE_LEAD_HOURS=48 npm run notify:deadlines
+```
+
+Schedule it once a day from whatever runs your other cron work:
+
+```cron
+# 07:00 daily
+0 7 * * *  cd /srv/cams/backend && npm run notify:deadlines >> /var/log/cams-deadlines.log 2>&1
+```
+
+In a container, run the compiled entry point instead: `node dist/src/jobs/notifyDeadlines.js`.
+
+Only students whose submission is still `PENDING` are reminded — anyone who has already
+submitted is skipped — and deadlines that have already passed are ignored, since a late
+submission is flagged on arrival anyway. Each reminder carries a stable `dedupeKey`
+(`assignment-due:<assignmentId>`), and the unique `(userId, dedupeKey)` constraint on
+`Notification` makes the job **idempotent**: running it twice a day, or catching up after a
+missed run, sends nothing extra.
 
 ---
 
@@ -382,6 +415,7 @@ the demo accounts, and serve over HTTPS (the refresh cookie is marked `secure` w
 | `npm run prisma:deploy` | Apply existing migrations (use in CI/production) |
 | `npm run prisma:studio` | Browse the data |
 | `npm run seed` | Reset and reseed demo data |
+| `npm run notify:deadlines` | Send assignment deadline reminders (run daily from cron) |
 | `npm test` / `npm run test:unit` | Unit tests for the academic maths — pure, no server or DB |
 | `npm run test:api` | API integration suite (needs a running server — see [Testing](#testing)) |
 
@@ -467,8 +501,13 @@ Verified by running it, not by inspection:
 - Prisma migration applies cleanly to an empty database; the seed populates ~2,900 attendance
   records, 204 test marks and 204 submissions.
 - Backend typechecks; the API boots and answers.
-- `backend/npm test` — 24 unit checks over the academic maths pass (with a mutation check
-  confirming the suite fails when the LEAVE-exclusion rule is broken).
+- `backend/npm test` — 34 unit checks pass, over the academic maths (with a mutation check
+  confirming the suite fails when the LEAVE-exclusion rule is broken) and the deadline-reminder
+  selection logic.
+- The deadline reminder job was verified against a seeded database: 48 reminders for 48 pending
+  submissions across 4 upcoming assignments, 0 sent to students who had already submitted, and a
+  second run sent 0 more (idempotent). The "due tomorrow" path was confirmed end-to-end by
+  moving an assignment inside the 24-hour window.
 - `backend/npm run test:api` — 33 API integration checks pass.
 - The CI workflow's integration job was simulated locally end-to-end against a fresh database
   (migrate → seed → boot → health check → API suite → ALL PASSED).
@@ -480,8 +519,11 @@ Not verified, and worth knowing:
 
 - The CI workflow itself has not yet run on GitHub's runners — only its steps were reproduced
   locally. The first push is its real first run.
-- Unit tests cover `utils/academics.ts` only. The controllers and services are exercised by
-  the integration suite, not by isolated unit tests.
+- Unit tests cover `utils/academics.ts` and the pure parts of `deadline.service.ts`. The
+  controllers and the remaining services are exercised by the integration suite, not by isolated
+  unit tests.
+- The deadline job is smoke-run in CI, but nothing asserts on its output there; the counts above
+  were checked by hand against the database.
 - Only Chromium was exercised. No Firefox or Safari testing.
 - No load or concurrency testing. `getAdminAnalytics` reads every attendance row into memory
   to compute its charts; that is fine at demo scale and will need aggregate SQL well before

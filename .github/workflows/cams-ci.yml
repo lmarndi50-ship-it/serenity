@@ -88,6 +88,10 @@ jobs:
         run: npx prisma migrate deploy
       - name: Seed demo data
         run: npm run seed
+      # Smoke-runs the scheduled job against a real database, so a runtime
+      # break in it is caught even though nothing else exercises it.
+      - name: Deadline reminder job
+        run: npm run notify:deadlines
       - name: Start API and run integration checks
         run: |
           npm run dev > /tmp/cams-api.log 2>&1 &
