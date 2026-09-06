@@ -1,8 +1,11 @@
 /**
- * Unit tests for the deadline-reminder selection logic. Pure functions only —
- * no database, no server.
+ * Unit tests for the deadline-reminder rules. Pure functions only.
  *
  *   npm run test:unit
+ *
+ * Imports `deadline.rules` rather than `deadline.service` on purpose: the
+ * service pulls in the Prisma client, which validates DATABASE_URL at import
+ * time and would make these tests require a configured database.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,7 +17,7 @@ import {
   deadlineDedupeKey,
   describeDueDate,
   isDueWithin,
-} from '../src/services/deadline.service';
+} from '../src/services/deadline.rules';
 
 const NOW = new Date(Date.UTC(2026, 8, 6, 9, 0, 0)); // 2026-09-06 09:00 UTC
 const hoursFromNow = (h: number) => new Date(NOW.getTime() + h * 3_600_000);

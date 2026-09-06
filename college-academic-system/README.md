@@ -126,6 +126,7 @@ src/
 ├── routes/                 Route table, wiring validation + auth middleware to controllers
 ├── middleware/             authenticate, authorize, validate, upload, centralised error handler
 ├── services/               Business logic: analytics, notifications, deadlines, tokens, settings, reports
+│                           (deadline.rules.ts holds the pure parts — no DB import, so it unit-tests freely)
 ├── jobs/                   Scheduled work run outside the API process (deadline reminders)
 ├── utils/                  academics.ts (all the maths), prisma client, ApiError, response helpers
 └── validation/schemas.ts   Every request shape, as Zod schemas
@@ -519,9 +520,12 @@ Not verified, and worth knowing:
 
 - The CI workflow itself has not yet run on GitHub's runners — only its steps were reproduced
   locally. The first push is its real first run.
-- Unit tests cover `utils/academics.ts` and the pure parts of `deadline.service.ts`. The
-  controllers and the remaining services are exercised by the integration suite, not by isolated
-  unit tests.
+- Unit tests cover `utils/academics.ts` and `services/deadline.rules.ts`. The controllers and
+  the database-touching services are exercised by the integration suite, not by isolated unit
+  tests.
+- Unit tests must not import a module that reaches `utils/prisma`: `config/env` validates and
+  throws at import time, so such a test fails in CI where no `DATABASE_URL` is set. Keep pure
+  logic in a module free of database imports — `deadline.rules.ts` is the pattern.
 - The deadline job is smoke-run in CI, but nothing asserts on its output there; the counts above
   were checked by hand against the database.
 - Only Chromium was exercised. No Firefox or Safari testing.
