@@ -1,0 +1,124 @@
+name: CAMS CI
+
+# Continuous integration for the College Academic Management System.
+# Scoped to its own subtree so unrelated changes to the repo don't trigger it.
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'college-academic-system/**'
+      - '.github/workflows/cams-ci.yml'
+  pull_request:
+    paths:
+      - 'college-academic-system/**'
+      - '.github/workflows/cams-ci.yml'
+
+# A newer push to the same ref cancels an in-flight run.
+concurrency:
+  group: cams-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Pure checks: unit tests, typecheck and build. No database needed — but the
+  # Prisma client must be generated first because the maths module imports an
+  # enum type from it.
+  backend:
+    name: Backend — unit, typecheck, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: college-academic-system/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: college-academic-system/backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Unit tests
+        run: npm run test:unit
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Build
+        run: npm run build
+
+  # API integration suite against a throwaway PostgreSQL service: migrate, seed,
+  # boot the compiled server, then run the checks.
+  backend-integration:
+    name: Backend — API integration
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: college-academic-system/backend
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: cams
+          POSTGRES_PASSWORD: cams_ci_password
+          POSTGRES_DB: cams
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U cams -d cams"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      NODE_ENV: development
+      PORT: '4000'
+      DATABASE_URL: postgresql://cams:cams_ci_password@localhost:5432/cams?schema=public
+      JWT_ACCESS_SECRET: ci-access-secret-not-for-production-use
+      JWT_REFRESH_SECRET: ci-refresh-secret-not-for-production-use
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: college-academic-system/backend/package-lock.json
+      - run: npm ci
+      - run: npx prisma generate
+      - name: Apply migrations
+        run: npx prisma migrate deploy
+      - name: Seed demo data
+        run: npm run seed
+      - name: Start API and run integration checks
+        run: |
+          npm run dev > /tmp/cams-api.log 2>&1 &
+          # Wait up to ~30s for the server to answer its health check, failing
+          # fast if the process dies during boot.
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:4000/api/health > /dev/null; then
+              echo "API is up"; break
+            fi
+            if ! jobs %1 > /dev/null 2>&1; then
+              echo "API process exited early:"; cat /tmp/cams-api.log; exit 1
+            fi
+            sleep 1
+          done
+          # Under `bash -e` a failing suite fails the step; the backgrounded
+          # server is reaped when the job's runner is torn down.
+          npm run test:api
+      - name: API log on failure
+        if: failure()
+        run: cat /tmp/cams-api.log || true
+
+  frontend:
+    name: Frontend — typecheck and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: college-academic-system/frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: college-academic-system/frontend/package-lock.json
+      - run: npm ci
+      # `npm run build` runs `tsc -b` (typecheck) before `vite build`.
+      - run: npm run build

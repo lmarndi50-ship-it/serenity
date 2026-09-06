@@ -382,7 +382,8 @@ the demo accounts, and serve over HTTPS (the refresh cookie is marked `secure` w
 | `npm run prisma:deploy` | Apply existing migrations (use in CI/production) |
 | `npm run prisma:studio` | Browse the data |
 | `npm run seed` | Reset and reseed demo data |
-| `npm test` | API integration suite (needs a running server — see [Testing](#testing)) |
+| `npm test` / `npm run test:unit` | Unit tests for the academic maths — pure, no server or DB |
+| `npm run test:api` | API integration suite (needs a running server — see [Testing](#testing)) |
 
 **frontend**
 
@@ -398,15 +399,18 @@ the demo accounts, and serve over HTTPS (the refresh cookie is marked `secure` w
 
 ## Testing
 
-Two suites ship with the code. Both run against a **live stack**, so start the API and the
-frontend first.
+Three suites ship with the code. The unit tests run anywhere; the other two need a **live
+stack**, so start the API (and, for the browser suite, the frontend) first.
 
 ```bash
-# API integration — 33 checks, no framework, no dependencies
+# Unit tests — 24 checks over the academic maths, no server or database
 cd backend
+npm test              # -> pass 24  fail 0
+
+# API integration — 33 checks, no framework, no dependencies
 npm run seed          # the assertions expect the seeded demo data
 npm run dev           # in another terminal
-npm test              # -> ALL PASSED
+npm run test:api      # -> ALL PASSED
 
 # Browser end-to-end — 43 checks across all three roles
 cd frontend
@@ -418,8 +422,23 @@ npm run test:e2e      # -> ALL PASSED, screenshots in tests/screenshots/
 Playwright is deliberately not a default dependency, because installing it downloads a
 browser. `PLAYWRIGHT_CHROMIUM=/path/to/chromium` points the suite at an existing binary.
 
-**`npm test` mutates the database** — it creates a test, an assignment, marks attendance and
-marks notifications read. Re-run `npm run seed` afterwards for a clean demo.
+The **unit suite** (`backend/tests/academics.unit.test.ts`) covers every function in
+`utils/academics.ts` — the single source of truth for every percentage in the app: the safe
+divide, LEAVE excluded from the attendance denominator, the attendance band boundaries with
+default and custom thresholds, weight normalisation and the 100 ceiling on the overall score,
+and the Monday-anchored week bucketing. It uses Node's built-in test runner via `tsx`, so
+there is no test framework to install.
+
+**CI** (`.github/workflows/cams-ci.yml`) runs on every push and PR that touches
+`college-academic-system/`: a backend job (unit tests, typecheck, build), a backend
+integration job (a throwaway PostgreSQL service, migrate, seed, boot the server, run the API
+suite), and a frontend job (typecheck and build). The browser E2E suite is not in CI — a
+Chromium download plus two running stacks is slow and flake-prone in CI — so it stays a local
+check.
+
+**`npm run test:api` mutates the database** — it creates a test, an assignment, marks
+attendance and marks notifications read. Re-run `npm run seed` afterwards for a clean demo.
+(The unit suite touches nothing external.)
 
 **Reset the database before starting the API, not while it is running.** `prisma migrate
 reset` drops and recreates the schema, and a running server keeps pooled connections to the
@@ -448,16 +467,21 @@ Verified by running it, not by inspection:
 - Prisma migration applies cleanly to an empty database; the seed populates ~2,900 attendance
   records, 204 test marks and 204 submissions.
 - Backend typechecks; the API boots and answers.
-- `backend/npm test` — 33 API integration checks pass.
+- `backend/npm test` — 24 unit checks over the academic maths pass (with a mutation check
+  confirming the suite fails when the LEAVE-exclusion rule is broken).
+- `backend/npm run test:api` — 33 API integration checks pass.
+- The CI workflow's integration job was simulated locally end-to-end against a fresh database
+  (migrate → seed → boot → health check → API suite → ALL PASSED).
 - Frontend typechecks and builds; the compiled backend (`npm run build && npm start`) serves.
 - `frontend/npm run test:e2e` — 43 browser checks pass, including no console or uncaught errors.
 - No horizontal overflow at 390, 768, 1024 and 1920 px.
 
 Not verified, and worth knowing:
 
-- **There are no unit tests.** Both suites are integration-level and need a running server and
-  database. `utils/academics.ts` in particular is pure and deserves unit tests; it does not
-  have them. There is also no CI configuration.
+- The CI workflow itself has not yet run on GitHub's runners — only its steps were reproduced
+  locally. The first push is its real first run.
+- Unit tests cover `utils/academics.ts` only. The controllers and services are exercised by
+  the integration suite, not by isolated unit tests.
 - Only Chromium was exercised. No Firefox or Safari testing.
 - No load or concurrency testing. `getAdminAnalytics` reads every attendance row into memory
   to compute its charts; that is fine at demo scale and will need aggregate SQL well before
