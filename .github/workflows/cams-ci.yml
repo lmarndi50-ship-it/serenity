@@ -3,8 +3,11 @@ name: CAMS CI
 # Continuous integration for the College Academic Management System.
 # Scoped to its own subtree so unrelated changes to the repo don't trigger it.
 on:
+  # On branches, CI runs through the pull_request event. Restricting push to
+  # main means a branch with an open PR is checked once (on the PR), not twice,
+  # while merges to main are still verified.
   push:
-    branches: ['**']
+    branches: [main]
     paths:
       - 'college-academic-system/**'
       - '.github/workflows/cams-ci.yml'
