@@ -15,8 +15,9 @@
     "prisma:reset": "prisma migrate reset --force",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "test:api": "node tests/api.test.mjs",
-    "test": "node tests/api.test.mjs"
+    "test": "npm run test:unit",
+    "test:unit": "tsx --test tests/*.unit.test.ts",
+    "test:api": "node tests/api.test.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
