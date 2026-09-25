@@ -69,6 +69,7 @@ main { display: flex; flex-direction: column; gap: 14px; }
 .aqi-hero { display: flex; align-items: center; gap: 18px; border-top: 6px solid var(--cat); }
 .aqi-number { font-size: 3.2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
 .aqi-category { font-size: 1.2rem; font-weight: 700; }
+.aqi-health { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
 
 /* Source */
 .source-main { display: flex; justify-content: space-between; font-size: 1.1rem; }

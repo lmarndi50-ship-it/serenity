@@ -5,13 +5,16 @@
 // and so the UI can colour things consistently. Give the same breakpoints to
 // the backend team so both sides agree.
 
+// `health` is CPCB's own "associated health impact" wording per category —
+// keep it here, not in a component, since every screen that shows a
+// category should say the same thing about it.
 export const CATEGORIES = [
-  { name: 'Good', max: 50, color: '#2e9e44' },
-  { name: 'Satisfactory', max: 100, color: '#8bbf3f' },
-  { name: 'Moderate', max: 200, color: '#e8c330' },
-  { name: 'Poor', max: 300, color: '#e8862e' },
-  { name: 'Very Poor', max: 400, color: '#d63b3b' },
-  { name: 'Severe', max: 500, color: '#8c1c2c' },
+  { name: 'Good', max: 50, color: '#2e9e44', health: 'Minimal impact' },
+  { name: 'Satisfactory', max: 100, color: '#8bbf3f', health: 'Minor breathing discomfort to sensitive people' },
+  { name: 'Moderate', max: 200, color: '#e8c330', health: 'Breathing discomfort to people with lung, asthma or heart disease, children and older adults' },
+  { name: 'Poor', max: 300, color: '#e8862e', health: 'Breathing discomfort to most people on prolonged exposure' },
+  { name: 'Very Poor', max: 400, color: '#d63b3b', health: 'Respiratory illness on prolonged exposure' },
+  { name: 'Severe', max: 500, color: '#8c1c2c', health: 'Affects healthy people, and seriously impacts those with existing disease' },
 ]
 
 // [concentration low, concentration high, index low, index high], µg/m³
