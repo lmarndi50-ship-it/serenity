@@ -38,7 +38,7 @@ Every place marked `TODO(you)` is an exercise. Suggested order:
 4. **PollutantGrid**: grey out dead sensors (`null`). Test it by setting a reading to `null` in the mock.
 5. **AqiHero**: add a one-line health note per category.
 6. **ForecastChart**: shade AQI category bands with Recharts `ReferenceArea`.
-7. **NodeMap**: add a real campus image in `public/` and measure node positions.
+7. **NodeMap**: ships with a placeholder schematic (`public/campus-map.svg`) so the map page works out of the box. Replace that one file with your real campus/ward layout — a drone photo, a scanned floor plan, a phone photo of a printed map — and adjust each node's `x`/`y` percentage in `src/data/mockNode.js` to match where they actually sit on it. The code doesn't change, only the image and the numbers.
 8. **Connect to the board**: confirm event names, add `/api/history`, run `npm run dev` against it.
 9. **Deploy**: `npm run build`, copy `dist/` to the board, and test with your laptop's internet **off**.
 

@@ -91,7 +91,15 @@ main { display: flex; flex-direction: column; gap: 14px; }
 .trend { color: var(--muted); font-size: 1rem; }
 
 /* Map */
-.map { position: relative; aspect-ratio: 16 / 10; border-radius: 8px; background: repeating-linear-gradient(45deg, var(--bg), var(--bg) 10px, var(--surface) 10px, var(--surface) 20px); border: 1px solid var(--grid); }
+/* The artwork itself is set inline from NodeMap.jsx via import.meta.env.BASE_URL
+   (not a literal /campus-map.svg here — that would break once base !== '/',
+   which is exactly the "served from a sub-path on the board" case this app is
+   built for). Swap public/campus-map.svg for a real site plan or drone photo
+   and every node position (percentages, see NodeMap.jsx) lines up unchanged.
+   The fallback colour is deliberately light regardless of theme: a real map
+   image wouldn't repaint for dark mode either. */
+.map { position: relative; aspect-ratio: 16 / 10; border-radius: 8px; background-color: #eef1ea; background-size: cover; background-position: center; border: 1px solid var(--grid); }
+.map-caption { margin: 6px 0 0; text-align: right; }
 .map-dot { position: absolute; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; background: var(--cat); border: 3px solid var(--surface); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 0.8rem; text-shadow: 0 1px 2px rgb(0 0 0 / 0.6); }
 .map-dot-offline { opacity: 0.4; border-style: dashed; }
 .node-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.85rem; }
