@@ -1,0 +1,108 @@
+/* System fonts only: no Google Fonts / CDN, because the node must work
+   with zero internet. */
+:root {
+  --bg: #f4f5f2;
+  --surface: #ffffff;
+  --ink: #1d2320;
+  --muted: #5f6a64;
+  --grid: #dfe3de;
+  --accent: #1f6f8b;
+  --good: #2e9e44;
+  --warn: #d49a12;
+  --bad: #d63b3b;
+  color-scheme: light;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121614;
+    --surface: #1b211e;
+    --ink: #e8ece9;
+    --muted: #9aa59f;
+    --grid: #2d3531;
+    --accent: #5fb3cf;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); }
+h2 { font-size: 0.95rem; margin: 0 0 10px; color: var(--muted); font-weight: 600; }
+.muted { color: var(--muted); }
+.small { font-size: 0.8rem; }
+
+.app { max-width: 960px; margin: 0 auto; padding: 0 16px 32px; }
+main { display: flex; flex-direction: column; gap: 14px; }
+
+/* Status bar */
+.statusbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 14px 0; font-size: 0.85rem; }
+.brand { font-size: 1.1rem; margin-right: auto; }
+.light { display: inline-flex; align-items: center; gap: 6px; }
+.light i { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+.light.on i { background: var(--good); }
+.light.off i { background: var(--bad); }
+.light.off { font-weight: 600; }
+.mock-badge { background: var(--warn); color: #1d2320; font-weight: 700; font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; }
+.banner { background: var(--bad); color: #fff; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+.tabs button { flex: 1; padding: 10px; border: 1px solid var(--grid); background: var(--surface); color: var(--ink); border-radius: 8px; font: inherit; cursor: pointer; }
+.tabs button.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* Cards */
+.card { background: var(--surface); border: 1px solid var(--grid); border-radius: 12px; padding: 16px; }
+.two-col { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 640px) { .two-col { grid-template-columns: 1fr 1fr; } }
+
+/* Actions: biggest text on the page on purpose */
+.actions { display: flex; flex-direction: column; gap: 10px; }
+.action-card { background: var(--surface); border: 1px solid var(--grid); border-left: 6px solid; border-radius: 10px; padding: 12px 16px; }
+.action-card p { margin: 4px 0 0; font-size: 1.15rem; font-weight: 600; line-height: 1.35; }
+.action-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.action-icon { margin-right: 6px; }
+
+/* AQI hero */
+.aqi-hero { display: flex; align-items: center; gap: 18px; border-top: 6px solid var(--cat); }
+.aqi-number { font-size: 3.2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.aqi-category { font-size: 1.2rem; font-weight: 700; }
+.aqi-health { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+/* Source */
+.source-main { display: flex; justify-content: space-between; font-size: 1.1rem; }
+.source-main .unsure { color: var(--muted); font-style: italic; font-weight: 500; }
+.bar { height: 8px; background: var(--grid); border-radius: 4px; margin: 8px 0 10px; overflow: hidden; }
+.bar div { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; }
+.bar div.bar-fill-unsure { background: var(--muted); }
+.source-alt { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 2px 0; }
+
+.chart { width: 100%; min-width: 0; }
+
+/* Sensor grid */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+.tile { background: var(--surface); border: 1px solid var(--grid); border-radius: 10px; padding: 10px 12px; font-size: 0.85rem; }
+.tile-value { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tile-dead { opacity: 0.45; }
+.tile-nodata { font-size: 1rem; font-weight: 600; font-style: italic; }
+.trend { color: var(--muted); font-size: 1rem; }
+
+/* Map */
+/* The artwork itself is set inline from NodeMap.jsx via import.meta.env.BASE_URL
+   (not a literal /campus-map.svg here — that would break once base !== '/',
+   which is exactly the "served from a sub-path on the board" case this app is
+   built for). Swap public/campus-map.svg for a real site plan or drone photo
+   and every node position (percentages, see NodeMap.jsx) lines up unchanged.
+   The fallback colour is deliberately light regardless of theme: a real map
+   image wouldn't repaint for dark mode either. */
+.map { position: relative; aspect-ratio: 16 / 10; border-radius: 8px; background-color: #eef1ea; background-size: cover; background-position: center; border: 1px solid var(--grid); }
+.map-caption { margin: 6px 0 0; text-align: right; }
+.map-dot { position: absolute; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; background: var(--cat); border: 3px solid var(--surface); display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 0.8rem; text-shadow: 0 1px 2px rgb(0 0 0 / 0.6); }
+.map-dot-offline { opacity: 0.4; border-style: dashed; }
+.node-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.85rem; }
+.node-table th, .node-table td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--grid); }
+
+.privacy { text-align: center; }

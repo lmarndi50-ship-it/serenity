@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrative campus layout</title>
+  <desc id="desc">Placeholder site plan. Replace this file with a real campus or ward map — node dots are positioned by percentage coordinates and don't depend on this artwork.</desc>
+
+  <!-- Paper-style background: deliberately light in both themes, like a
+       printed site plan or aerial photo would be regardless of app theme. -->
+  <rect width="1000" height="625" fill="#eef1ea" />
+  <rect x="6" y="6" width="988" height="613" fill="none" stroke="#c7cdbf" stroke-width="2" />
+
+  <!-- Ground texture: light plot lines -->
+  <g stroke="#dde2d4" stroke-width="1">
+    <path d="M0,125 H1000 M0,250 H1000 M0,375 H1000 M0,500 H1000" />
+    <path d="M200,0 V625 M400,0 V625 M600,0 V625 M800,0 V625" />
+  </g>
+
+  <!-- Boundary wall -->
+  <rect x="40" y="40" width="920" height="545" fill="none" stroke="#9aa48d" stroke-width="3" stroke-dasharray="2 6" />
+
+  <!-- Internal road network connecting the node locations -->
+  <g stroke="#c9b98a" stroke-width="14" stroke-linecap="round" fill="none">
+    <path d="M180,487 L400,470 L450,362 L620,250 L400,137" />
+    <path d="M450,362 L850,437" />
+  </g>
+  <g stroke="#fff" stroke-width="2" stroke-dasharray="10 10" fill="none" opacity="0.7">
+    <path d="M180,487 L400,470 L450,362 L620,250 L400,137" />
+    <path d="M450,362 L850,437" />
+  </g>
+
+  <!-- Main gate (18, 78) -->
+  <g transform="translate(180,487)">
+    <rect x="-55" y="-14" width="30" height="46" fill="#8a9c86" />
+    <rect x="25" y="-14" width="30" height="46" fill="#8a9c86" />
+    <rect x="-55" y="-22" width="110" height="12" fill="#6f8169" />
+    <text x="0" y="55" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" fill="#4a5245">Main gate</text>
+  </g>
+
+  <!-- Library (40, 22) -->
+  <g transform="translate(400,137)">
+    <rect x="-70" y="-45" width="140" height="90" rx="6" fill="#cdd6c4" stroke="#8fa184" stroke-width="3" />
+    <path d="M-70,-45 L0,-80 L70,-45 Z" fill="#a8b89c" stroke="#8fa184" stroke-width="3" />
+    <text x="0" y="70" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" fill="#4a5245">Library</text>
+  </g>
+
+  <!-- Canteen (62, 40) -->
+  <g transform="translate(620,250)">
+    <rect x="-65" y="-40" width="130" height="80" rx="6" fill="#e3d9b8" stroke="#c2ac74" stroke-width="3" />
+    <text x="0" y="62" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" fill="#4a5245">Canteen</text>
+  </g>
+
+  <!-- Classroom block (45, 58) — the primary node's building -->
+  <g transform="translate(450,362)">
+    <rect x="-90" y="-55" width="180" height="110" rx="6" fill="#d7c9d6" stroke="#a888a6" stroke-width="3" />
+    <g stroke="#a888a6" stroke-width="2">
+      <path d="M-45,-55 V55 M0,-55 V55 M45,-55 V55" />
+    </g>
+    <text x="0" y="80" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" fill="#4a5245">Classroom block</text>
+  </g>
+
+  <!-- Back lane (85, 70) — unpaved lane, deliberately sparse -->
+  <g transform="translate(850,437)">
+    <path d="M-60,-10 L60,10" stroke="#b7ac8a" stroke-width="10" stroke-linecap="round" />
+    <text x="0" y="45" text-anchor="middle" font-family="system-ui, sans-serif" font-size="22" fill="#4a5245">Back lane</text>
+  </g>
+
+  <!-- Compass -->
+  <g transform="translate(930,80)" font-family="system-ui, sans-serif">
+    <circle r="34" fill="#fff" stroke="#9aa48d" stroke-width="2" />
+    <path d="M0,-26 L8,0 L0,26 L-8,0 Z" fill="#4a5245" />
+    <text x="0" y="-38" text-anchor="middle" font-size="16" fill="#4a5245">N</text>
+  </g>
+</svg>
