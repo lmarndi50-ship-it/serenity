@@ -8,13 +8,19 @@ const PRIORITY_STYLE = {
   low: { border: 'var(--good)', label: 'Tip' },
 }
 
+// Lower number = shown first.
+const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 }
+
 export default function ActionCards({ advice }) {
   if (!advice?.length) return null
-  // TODO(you): cap at 3 cards and sort high → low priority.
+  // Copy before sorting: `.sort()` mutates in place, and `advice` is a prop.
+  const top = [...advice]
+    .sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority])
+    .slice(0, 3)
   // TODO(you): add an icon per action type (window, fan, route, indoor).
   return (
     <section className="actions" aria-label="What to do now">
-      {advice.map((a, i) => {
+      {top.map((a, i) => {
         const style = PRIORITY_STYLE[a.priority] ?? PRIORITY_STYLE.low
         return (
           <article key={i} className="action-card" style={{ borderLeftColor: style.border }}>
