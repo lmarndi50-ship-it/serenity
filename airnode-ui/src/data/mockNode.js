@@ -77,6 +77,12 @@ export function nextMockReading(nodeId = 'node-01') {
   state.readings.humidity = drift(state.readings.humidity, 62, 0.05)
   const readings = Object.fromEntries(Object.entries(state.readings).map(([k, v]) => [k, round1(v)]))
 
+  // Simulate the VOC sensor dropping out for a while, on its own cadence
+  // (unrelated to the online/offline cycle below). This exercises
+  // PollutantGrid's dead-sensor state, which otherwise never shows in the
+  // mock — AQI is computed from pm25/pm10 only, so this can't skew it.
+  if (state.tick % 55 >= 48) readings.voc_index = null
+
   // Go "offline" for a while every so often so the offline UI gets exercised.
   if (state.tick % 40 === 0) state.online = !state.online
   if (state.online) {

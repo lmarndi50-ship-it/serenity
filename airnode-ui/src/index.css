@@ -86,6 +86,7 @@ main { display: flex; flex-direction: column; gap: 14px; }
 .tile { background: var(--surface); border: 1px solid var(--grid); border-radius: 10px; padding: 10px 12px; font-size: 0.85rem; }
 .tile-value { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .tile-dead { opacity: 0.45; }
+.tile-nodata { font-size: 1rem; font-weight: 600; font-style: italic; }
 .trend { color: var(--muted); font-size: 1rem; }
 
 /* Map */

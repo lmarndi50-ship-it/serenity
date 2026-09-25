@@ -12,19 +12,24 @@ function trend(history, key) {
 }
 
 export default function PollutantGrid({ readings, history }) {
-  // TODO(you): if a sensor sends null, grey its card out and show "no data"
-  // instead of a stale number. A dead sensor must never look alive.
   return (
     <section className="grid" aria-label="Sensor readings">
       {POLLUTANTS.map((p) => {
         const v = readings[p.key]
+        const dead = v == null
         return (
-          <div key={p.key} className={`tile ${v == null ? 'tile-dead' : ''}`}>
+          <div key={p.key} className={`tile ${dead ? 'tile-dead' : ''}`}>
             <div className="muted">{p.label}</div>
-            <div className="tile-value">
-              {v ?? '—'} <span className="trend">{trend(history, p.key)}</span>
-            </div>
-            <div className="muted small">{p.unit}</div>
+            {dead ? (
+              <div className="tile-value tile-nodata">No data</div>
+            ) : (
+              <>
+                <div className="tile-value">
+                  {v} <span className="trend">{trend(history, p.key)}</span>
+                </div>
+                <div className="muted small">{p.unit}</div>
+              </>
+            )}
           </div>
         )
       })}
