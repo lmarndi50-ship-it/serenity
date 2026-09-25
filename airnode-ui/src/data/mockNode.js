@@ -48,20 +48,23 @@ function adviceFor(aqi, source) {
   // TODO(you): this is the "advisory layer". On the real board it comes from
   // the backend; here it only needs to look plausible. Make the text
   // specific (a time, a place, an object in the room) — vague advice is noise.
+  //
+  // `type` is a fixed action category (see DATA_CONTRACT.md), used to pick
+  // an icon in ActionCards. Never guess it from the text on the UI side.
   if (source === 'garbage_burning') {
     return [
-      { text: 'Smoke nearby — keep windows shut and switch on the exhaust fan', priority: 'high' },
-      { text: 'Move outdoor PE / play indoors for the next 2 hours', priority: 'high' },
+      { text: 'Smoke nearby — keep windows shut and switch on the exhaust fan', priority: 'high', type: 'fan' },
+      { text: 'Move outdoor PE / play indoors for the next 2 hours', priority: 'high', type: 'indoor' },
     ]
   }
   if (source === 'traffic' && aqi.value > 100) {
     return [
-      { text: 'Walk via the inner lane instead of the main road', priority: 'medium' },
-      { text: 'Open windows after 11:00 when traffic eases', priority: 'low' },
+      { text: 'Walk via the inner lane instead of the main road', priority: 'medium', type: 'route' },
+      { text: 'Open windows after 11:00 when traffic eases', priority: 'low', type: 'window' },
     ]
   }
-  if (aqi.value <= 100) return [{ text: 'Good time to open windows and air out rooms', priority: 'low' }]
-  return [{ text: 'Limit long outdoor exertion today', priority: 'medium' }]
+  if (aqi.value <= 100) return [{ text: 'Good time to open windows and air out rooms', priority: 'low', type: 'window' }]
+  return [{ text: 'Limit long outdoor exertion today', priority: 'medium', type: 'indoor' }]
 }
 
 export function nextMockReading(nodeId = 'node-01') {

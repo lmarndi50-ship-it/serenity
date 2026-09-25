@@ -23,7 +23,7 @@ Pushed by the board over Socket.IO, event name `reading`, every few seconds.
     "confidence": 0.72,
     "alternatives": [ { "label": "construction_dust", "confidence": 0.18 } ]
   },
-  "advice": [ { "text": "Keep windows closed until 11:00", "priority": "high" } ],
+  "advice": [ { "text": "Keep windows closed until 11:00", "priority": "high", "type": "window" } ],
   "status": {
     "online": false,
     "last_sync": "2026-09-25T06:00:00+05:30",
@@ -41,6 +41,7 @@ Pushed by the board over Socket.IO, event name `reading`, every few seconds.
 | `source.label` | One of `traffic`, `garbage_burning`, `construction_dust`, `cooking_smoke`, `crop_burning`, `clean`. New labels need a UI label in `src/lib/labels.js`. |
 | `source.confidence` | 0–1, the classifier's own probability. Don't round it up. |
 | `advice.priority` | `high` (do now), `medium` (today), `low` (tip). |
+| `advice.type` | One of `window`, `fan`, `route`, `indoor`. Picks the icon shown in `ActionCards`. New types need an entry in `ACTION_ICON` there. Don't infer it from `text` on the UI side — if a new action doesn't fit these, add a type rather than matching keywords. |
 | `status.online` | Whether the **board** has internet. Not the same as whether the page can reach the board. |
 
 ## Other endpoints (to agree)

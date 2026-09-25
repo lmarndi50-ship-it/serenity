@@ -63,6 +63,7 @@ main { display: flex; flex-direction: column; gap: 14px; }
 .action-card { background: var(--surface); border: 1px solid var(--grid); border-left: 6px solid; border-radius: 10px; padding: 12px 16px; }
 .action-card p { margin: 4px 0 0; font-size: 1.15rem; font-weight: 600; line-height: 1.35; }
 .action-tag { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.action-icon { margin-right: 6px; }
 
 /* AQI hero */
 .aqi-hero { display: flex; align-items: center; gap: 18px; border-top: 6px solid var(--cat); }
