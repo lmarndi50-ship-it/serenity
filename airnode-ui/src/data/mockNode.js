@@ -98,7 +98,9 @@ export function nextMockReading(nodeId = 'node-01') {
     }
   })
 
-  const confidence = round1(0.55 + Math.min(progress, 1) * 0.35)
+  // Starts unsure right after a phase change (exercises the "Unclear" state
+  // in SourceCard), then grows confident as more consistent readings arrive.
+  const confidence = round1(0.35 + Math.min(progress, 1) * 0.55)
   const [alt1, alt2] = ALTERNATIVES[phase.source] ?? []
 
   return {

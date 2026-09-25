@@ -72,8 +72,10 @@ main { display: flex; flex-direction: column; gap: 14px; }
 
 /* Source */
 .source-main { display: flex; justify-content: space-between; font-size: 1.1rem; }
+.source-main .unsure { color: var(--muted); font-style: italic; font-weight: 500; }
 .bar { height: 8px; background: var(--grid); border-radius: 4px; margin: 8px 0 10px; overflow: hidden; }
 .bar div { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s; }
+.bar div.bar-fill-unsure { background: var(--muted); }
 .source-alt { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 2px 0; }
 
 .chart { width: 100%; min-width: 0; }
