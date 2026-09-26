@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+::selection {
+  background: rgba(57, 255, 154, 0.25);
+  color: var(--color-text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-elevated);
+  border-radius: 999px;
+  border: 2px solid var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(57, 255, 154, 0.3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-emerald);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.font-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.glass-panel {
+  background: linear-gradient(180deg, rgba(16, 42, 36, 0.55), rgba(13, 31, 27, 0.55));
+  border: 1px solid var(--color-border-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 0 1px rgba(57, 255, 154, 0.15), 0 0 40px -10px rgba(57, 255, 154, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 0 1px rgba(56, 217, 255, 0.15), 0 0 40px -10px rgba(56, 217, 255, 0.35);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #f3f7f5 30%, #39ff9a 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 1.8s var(--ease-out-quart) infinite;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.animate-drift {
+  animation: drift 6s ease-in-out infinite;
+}

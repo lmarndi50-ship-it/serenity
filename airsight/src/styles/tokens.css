@@ -1,0 +1,53 @@
+@theme {
+  /* ---- color system ---- */
+  --color-bg-primary: #06100f;
+  --color-bg-secondary: #0a1715;
+  --color-bg-panel: #0d1f1b;
+  --color-bg-elevated: #102a24;
+
+  --color-accent-emerald: #39ff9a;
+  --color-accent-cyan: #38d9ff;
+  --color-warning: #ffc857;
+  --color-danger: #ff5c5c;
+
+  --color-text-primary: #f3f7f5;
+  --color-text-secondary: #9eb1aa;
+  --color-text-muted: #60736c;
+
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+
+  /* ---- typography ---- */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ---- spacing scale (extends default) ---- */
+  --spacing-18: 4.5rem;
+  --spacing-30: 7.5rem;
+
+  /* ---- radii ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* ---- easing ---- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --breakpoint-xs: 22.5rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
