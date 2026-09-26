@@ -1,10 +1,11 @@
 import { lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Cpu } from 'lucide-react'
+import { ArrowRight, Cpu, Radio } from 'lucide-react'
 import { useAirSight } from '@/hooks/useAirSightState'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { Button } from '@/components/ui/Button'
 import { MicroLabel } from '@/components/ui/MicroLabel'
+import { SceneErrorBoundary } from '@/components/three/SceneErrorBoundary'
 import { bandForIndex, compositeIndex } from '@/utils/aqi'
 
 const EdgeNodeScene = lazy(() => import('@/three/EdgeNodeScene').then((m) => ({ default: m.EdgeNodeScene })))
@@ -111,9 +112,20 @@ export function Hero() {
         </div>
 
         <div className="relative h-[420px] sm:h-[520px] lg:h-[600px]">
-          <Suspense fallback={<div className="absolute inset-0 rounded-3xl bg-[var(--color-bg-panel)]/40" />}>
-            <EdgeNodeScene className="absolute inset-0" />
-          </Suspense>
+          <SceneErrorBoundary
+            fallback={
+              <div className="absolute inset-0 rounded-3xl glass-panel flex flex-col items-center justify-center gap-3">
+                <Radio size={28} className="text-[var(--color-accent-emerald)] pulse-dot" />
+                <span className="text-xs font-data tracking-[0.15em] uppercase text-[var(--color-text-muted)]">
+                  Edge Node · 3D Preview Unavailable
+                </span>
+              </div>
+            }
+          >
+            <Suspense fallback={<div className="absolute inset-0 rounded-3xl bg-[var(--color-bg-panel)]/40" />}>
+              <EdgeNodeScene className="absolute inset-0" />
+            </Suspense>
+          </SceneErrorBoundary>
 
           <FloatingCard
             label="PM2.5"
