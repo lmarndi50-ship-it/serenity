@@ -7,7 +7,7 @@ import { cx } from '@/utils/format'
 const BAND_TONE: Record<AqiBand, string> = {
   good: 'text-[var(--color-accent-emerald)]',
   moderate: 'text-[var(--color-warning)]',
-  unhealthy: 'text-[#ff8a3d]',
+  unhealthy: 'text-[var(--color-unhealthy)]',
   critical: 'text-[var(--color-danger)]',
 }
 

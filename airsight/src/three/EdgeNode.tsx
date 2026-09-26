@@ -3,8 +3,8 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { RoundedBox, Sparkles, Float } from '@react-three/drei'
 import * as THREE from 'three'
 
-const EMERALD = '#39FF9A'
-const CYAN = '#38D9FF'
+const EMERALD = '#3CFFA6'
+const CYAN = '#4FE0FF'
 
 interface SensorPodProps {
   position: [number, number, number]

@@ -73,7 +73,7 @@ export function Navbar() {
               aria-current={active === item.id ? 'true' : undefined}
             >
               {active === item.id && (
-                <span className="absolute inset-0 rounded-full bg-white/[0.06] border border-white/10" />
+                <span className="absolute inset-0 rounded-full bg-[var(--color-accent-emerald)]/[0.08] border border-[var(--color-accent-emerald)]/25" />
               )}
               <span className="relative">{item.label}</span>
             </button>

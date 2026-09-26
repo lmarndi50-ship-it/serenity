@@ -8,6 +8,7 @@ interface Particle {
   duration: number
   delay: number
   opacity: number
+  color: string
 }
 
 function useParticleCount() {
@@ -33,7 +34,8 @@ export function BackgroundAtmosphere() {
         size: 1 + Math.random() * 2,
         duration: 14 + Math.random() * 18,
         delay: -Math.random() * 20,
-        opacity: 0.15 + Math.random() * 0.35,
+        opacity: 0.18 + Math.random() * 0.42,
+        color: Math.random() > 0.45 ? 'var(--color-accent-cyan)' : 'var(--color-accent-emerald)',
       })),
     [count],
   )
@@ -54,11 +56,11 @@ export function BackgroundAtmosphere() {
         className={reducedMotion ? '' : 'animate-drift'}
         style={{
           position: 'absolute',
-          top: '-10%',
-          left: '-10%',
-          width: '60%',
-          height: '60%',
-          background: 'radial-gradient(circle, rgba(57,255,154,0.09), transparent 70%)',
+          top: '-14%',
+          left: '-12%',
+          width: '62%',
+          height: '62%',
+          background: 'radial-gradient(circle, rgba(60,255,166,0.16), transparent 70%)',
           filter: 'blur(10px)',
         }}
       />
@@ -66,13 +68,26 @@ export function BackgroundAtmosphere() {
         className={reducedMotion ? '' : 'animate-drift'}
         style={{
           position: 'absolute',
-          bottom: '-15%',
-          right: '-10%',
-          width: '55%',
-          height: '55%',
-          background: 'radial-gradient(circle, rgba(56,217,255,0.08), transparent 70%)',
+          bottom: '-18%',
+          right: '-12%',
+          width: '58%',
+          height: '58%',
+          background: 'radial-gradient(circle, rgba(79,224,255,0.14), transparent 70%)',
           filter: 'blur(10px)',
           animationDelay: '-3s',
+        }}
+      />
+      <div
+        className={reducedMotion ? '' : 'animate-drift'}
+        style={{
+          position: 'absolute',
+          top: '35%',
+          left: '35%',
+          width: '40%',
+          height: '40%',
+          background: 'radial-gradient(circle, rgba(255,203,102,0.05), transparent 72%)',
+          filter: 'blur(14px)',
+          animationDelay: '-6s',
         }}
       />
 
@@ -80,13 +95,15 @@ export function BackgroundAtmosphere() {
         particles.map((p, i) => (
           <span
             key={i}
-            className="absolute rounded-full bg-[var(--color-accent-cyan)]"
+            className="absolute rounded-full"
             style={{
               left: `${p.left}%`,
               top: `${p.top}%`,
               width: p.size,
               height: p.size,
               opacity: p.opacity,
+              background: p.color,
+              boxShadow: `0 0 6px 0 ${p.color}`,
               animation: `drift ${p.duration}s ease-in-out infinite`,
               animationDelay: `${p.delay}s`,
             }}

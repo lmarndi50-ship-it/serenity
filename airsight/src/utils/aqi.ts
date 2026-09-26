@@ -24,7 +24,7 @@ export function bandForIndex(index: number): AqiBand {
 export const BAND_META: Record<AqiBand, { label: string; color: string; description: string }> = {
   good: { label: 'GOOD', color: 'var(--color-accent-emerald)', description: 'Air quality is satisfactory.' },
   moderate: { label: 'MODERATE', color: 'var(--color-warning)', description: 'Acceptable, but sensitive groups should take care.' },
-  unhealthy: { label: 'UNHEALTHY', color: '#ff8a3d', description: 'Everyone may begin to notice effects.' },
+  unhealthy: { label: 'UNHEALTHY', color: 'var(--color-unhealthy)', description: 'Everyone may begin to notice effects.' },
   critical: { label: 'CRITICAL', color: 'var(--color-danger)', description: 'Health warning of emergency conditions.' },
 }
 

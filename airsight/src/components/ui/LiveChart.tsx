@@ -72,7 +72,7 @@ export function LiveChart() {
                 className={cx(
                   'px-3 py-1 text-xs font-data rounded-full transition-colors',
                   timeRange === r
-                    ? 'bg-[var(--color-accent-emerald)] text-[#06100f]'
+                    ? 'bg-[var(--color-accent-emerald)] text-[#050b0a]'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
                 )}
               >
@@ -88,7 +88,7 @@ export function LiveChart() {
                 className={cx(
                   'px-3 py-1 text-xs font-data rounded-full transition-colors',
                   (mode === 'LIVE') === liveMode
-                    ? 'bg-[var(--color-accent-cyan)] text-[#06100f]'
+                    ? 'bg-[var(--color-accent-cyan)] text-[#050b0a]'
                     : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
                 )}
               >
@@ -104,8 +104,8 @@ export function LiveChart() {
           <AreaChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="pm25Fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#39FF9A" stopOpacity={0.28} />
-                <stop offset="100%" stopColor="#39FF9A" stopOpacity={0} />
+                <stop offset="0%" stopColor="#3CFFA6" stopOpacity={0.28} />
+                <stop offset="100%" stopColor="#3CFFA6" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
@@ -135,7 +135,7 @@ export function LiveChart() {
               type="monotone"
               dataKey="pm25"
               name="PM2.5"
-              stroke="#39FF9A"
+              stroke="#3CFFA6"
               strokeWidth={2}
               fill="url(#pm25Fill)"
               isAnimationActive={false}
@@ -146,7 +146,7 @@ export function LiveChart() {
               type="monotone"
               dataKey="pm10"
               name="PM10"
-              stroke="#FFC857"
+              stroke="#FFCB66"
               strokeWidth={1.5}
               fill="transparent"
               isAnimationActive={false}
@@ -157,7 +157,7 @@ export function LiveChart() {
               type="monotone"
               dataKey="co2"
               name="CO₂"
-              stroke="#38D9FF"
+              stroke="#4FE0FF"
               strokeWidth={1.5}
               fill="transparent"
               isAnimationActive={false}

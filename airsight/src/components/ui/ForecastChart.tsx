@@ -49,7 +49,7 @@ export function ForecastChart() {
             type="monotone"
             dataKey="observed"
             name="Observed PM2.5"
-            stroke="#39FF9A"
+            stroke="#3CFFA6"
             strokeWidth={2.5}
             dot={false}
             isAnimationActive={false}
@@ -59,7 +59,7 @@ export function ForecastChart() {
             type="monotone"
             dataKey="predicted"
             name="Predicted PM2.5"
-            stroke="#38D9FF"
+            stroke="#4FE0FF"
             strokeWidth={2.5}
             strokeDasharray="6 5"
             dot={{ r: 3 }}

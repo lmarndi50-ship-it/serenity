@@ -15,7 +15,7 @@ export function ConfidenceBar({ value, label, highlight = false }: { value: numb
           style={{
             width: `${value}%`,
             background: highlight
-              ? 'linear-gradient(90deg, #39FF9A, #38D9FF)'
+              ? 'linear-gradient(90deg, #3CFFA6, #4FE0FF)'
               : 'rgba(255,255,255,0.25)',
           }}
         />

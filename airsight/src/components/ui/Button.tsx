@@ -12,9 +12,9 @@ export function Button({ variant = 'primary', className, children, ...rest }: Bu
       className={cx(
         'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold tracking-wide uppercase transition-all duration-300',
         variant === 'primary' &&
-          'bg-[var(--color-accent-emerald)] text-[#06100f] hover:shadow-[0_0_32px_-4px_rgba(57,255,154,0.6)] hover:-translate-y-0.5',
+          'bg-[linear-gradient(120deg,#3cffa6,#4fe0ff)] text-[#050b0a] shadow-[0_8px_24px_-8px_rgba(60,255,166,0.5)] hover:shadow-[0_10px_36px_-6px_rgba(60,255,166,0.65)] hover:-translate-y-0.5',
         variant === 'secondary' &&
-          'border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] hover:border-[var(--color-accent-cyan)]/50 hover:text-[var(--color-accent-cyan)]',
+          'border border-[var(--color-border-strong)] text-[var(--color-text-primary)] bg-white/[0.03] hover:border-[var(--color-accent-cyan)]/60 hover:text-[var(--color-accent-cyan)] hover:bg-white/[0.05]',
         variant === 'ghost' && 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
         className,
       )}

@@ -23,11 +23,11 @@ export function EdgeNodeScene({ className }: { className?: string }) {
           gl={{ antialias: true, powerPreference: 'high-performance' }}
           frameloop={reducedMotion ? 'demand' : 'always'}
         >
-          <color attach="background" args={['#06100f']} />
+          <color attach="background" args={['#050b0a']} />
           <ambientLight intensity={0.55} />
           <directionalLight position={[3, 4, 2]} intensity={1.1} color="#eafff2" />
-          <pointLight position={[-3, -1, -2]} intensity={8} color="#38D9FF" distance={8} />
-          <pointLight position={[2, 2, 2]} intensity={6} color="#39FF9A" distance={8} />
+          <pointLight position={[-3, -1, -2]} intensity={8} color="#4FE0FF" distance={8} />
+          <pointLight position={[2, 2, 2]} intensity={6} color="#3CFFA6" distance={8} />
           <EdgeNode reducedMotion={reducedMotion} />
         </Canvas>
       </Suspense>

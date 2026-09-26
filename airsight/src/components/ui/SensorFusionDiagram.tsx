@@ -19,7 +19,7 @@ export function SensorFusionDiagram({ resultLabel }: { resultLabel: string }) {
             <span
               className="absolute inset-0 opacity-40"
               style={{
-                background: 'linear-gradient(90deg, transparent, rgba(56,217,255,0.4), transparent)',
+                background: 'linear-gradient(90deg, transparent, rgba(79,224,255,0.45), transparent)',
                 backgroundSize: '200% 100%',
                 animation: `flowStripe 2.4s linear infinite`,
                 animationDelay: `${i * 0.15}s`,
