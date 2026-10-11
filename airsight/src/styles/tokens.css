@@ -1,0 +1,67 @@
+@theme {
+  /* ---- color system ---- */
+  /* background steps: each is a deliberately distinct, verified luminance
+     jump (contrast primary->elevated ~1.6:1) so panels read as physical
+     surfaces instead of blending into the page */
+  --color-bg-primary: #050b0a;
+  --color-bg-secondary: #081512;
+  --color-bg-panel: #122420;
+  --color-bg-elevated: #1d3b32;
+
+  /* accent pairs: a bright "signal" tone for active/highlighted states and
+     a deeper tone for secondary uses (gradients, subtle fills, borders) so
+     the palette isn't one flat neon on black */
+  --color-accent-emerald: #3cffa6;
+  --color-accent-emerald-deep: #12ad72;
+  --color-accent-cyan: #4fe0ff;
+  --color-accent-cyan-deep: #1c8fbf;
+  --color-warning: #ffcb66;
+  --color-warning-deep: #c98a2e;
+  --color-danger: #ff6b6b;
+  --color-danger-deep: #b23a3a;
+  --color-unhealthy: #ff9a4d;
+
+  /* text: all three steps verified >=4.4:1 against every background step
+     above (AA for large/UI text; primary and secondary clear AAA) */
+  --color-text-primary: #f7faf8;
+  --color-text-secondary: #b7cac3;
+  --color-text-muted: #8ca69d;
+
+  --color-border-subtle: rgba(255, 255, 255, 0.11);
+  --color-border-strong: rgba(255, 255, 255, 0.24);
+
+  /* ---- typography ---- */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ---- spacing scale (extends default) ---- */
+  --spacing-18: 4.5rem;
+  --spacing-30: 7.5rem;
+
+  /* ---- radii ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* ---- easing ---- */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --breakpoint-xs: 22.5rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
